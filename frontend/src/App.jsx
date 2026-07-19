@@ -36,40 +36,83 @@ const allTiles = tileGroups.flatMap((group) => group.tiles);
 const windOptions = ["east", "south", "west", "north"];
 
 const tileFaceMap = {
-  "1m": "🀇",
-  "2m": "🀈",
-  "3m": "🀉",
-  "4m": "🀊",
-  "5m": "🀋",
-  "6m": "🀌",
-  "7m": "🀍",
-  "8m": "🀎",
-  "9m": "🀏",
-  "1p": "🀙",
-  "2p": "🀚",
-  "3p": "🀛",
-  "4p": "🀜",
-  "5p": "🀝",
-  "6p": "🀞",
-  "7p": "🀟",
-  "8p": "🀠",
-  "9p": "🀡",
-  "1s": "🀐",
-  "2s": "🀑",
-  "3s": "🀒",
-  "4s": "🀓",
-  "5s": "🀔",
-  "6s": "🀕",
-  "7s": "🀖",
-  "8s": "🀗",
-  "9s": "🀘",
-  "1z": "🀀",
-  "2z": "🀁",
-  "3z": "🀂",
-  "4z": "🀃",
-  "5z": "🀆",
-  "6z": "🀅",
-  "7z": "🀄",
+  "1m": new URL("./assets/tiles/Man1.svg", import.meta.url).href,
+  "2m": new URL("./assets/tiles/Man2.svg", import.meta.url).href,
+  "3m": new URL("./assets/tiles/Man3.svg", import.meta.url).href,
+  "4m": new URL("./assets/tiles/Man4.svg", import.meta.url).href,
+  "5m": new URL("./assets/tiles/Man5.svg", import.meta.url).href,
+  "0m": new URL("./assets/tiles/Man5-Dora.svg", import.meta.url).href,
+  "6m": new URL("./assets/tiles/Man6.svg", import.meta.url).href,
+  "7m": new URL("./assets/tiles/Man7.svg", import.meta.url).href,
+  "8m": new URL("./assets/tiles/Man8.svg", import.meta.url).href,
+  "9m": new URL("./assets/tiles/Man9.svg", import.meta.url).href,
+  "1p": new URL("./assets/tiles/Pin1.svg", import.meta.url).href,
+  "2p": new URL("./assets/tiles/Pin2.svg", import.meta.url).href,
+  "3p": new URL("./assets/tiles/Pin3.svg", import.meta.url).href,
+  "4p": new URL("./assets/tiles/Pin4.svg", import.meta.url).href,
+  "5p": new URL("./assets/tiles/Pin5.svg", import.meta.url).href,
+  "0p": new URL("./assets/tiles/Pin5-Dora.svg", import.meta.url).href,
+  "6p": new URL("./assets/tiles/Pin6.svg", import.meta.url).href,
+  "7p": new URL("./assets/tiles/Pin7.svg", import.meta.url).href,
+  "8p": new URL("./assets/tiles/Pin8.svg", import.meta.url).href,
+  "9p": new URL("./assets/tiles/Pin9.svg", import.meta.url).href,
+  "1s": new URL("./assets/tiles/Sou1.svg", import.meta.url).href,
+  "2s": new URL("./assets/tiles/Sou2.svg", import.meta.url).href,
+  "3s": new URL("./assets/tiles/Sou3.svg", import.meta.url).href,
+  "4s": new URL("./assets/tiles/Sou4.svg", import.meta.url).href,
+  "5s": new URL("./assets/tiles/Sou5.svg", import.meta.url).href,
+  "0s": new URL("./assets/tiles/Sou5-Dora.svg", import.meta.url).href,
+  "6s": new URL("./assets/tiles/Sou6.svg", import.meta.url).href,
+  "7s": new URL("./assets/tiles/Sou7.svg", import.meta.url).href,
+  "8s": new URL("./assets/tiles/Sou8.svg", import.meta.url).href,
+  "9s": new URL("./assets/tiles/Sou9.svg", import.meta.url).href,
+  "1z": new URL("./assets/tiles/Ton.svg", import.meta.url).href,
+  "2z": new URL("./assets/tiles/Nan.svg", import.meta.url).href,
+  "3z": new URL("./assets/tiles/Shaa.svg", import.meta.url).href,
+  "4z": new URL("./assets/tiles/Pei.svg", import.meta.url).href,
+  "5z": new URL("./assets/tiles/Haku.svg", import.meta.url).href,
+  "6z": new URL("./assets/tiles/Hatsu.svg", import.meta.url).href,
+  "7z": new URL("./assets/tiles/Chun.svg", import.meta.url).href,
+};
+
+const tileVisualLabels = {
+  "1m": { corner: "1M", label: "1 Man" },
+  "2m": { corner: "2M", label: "2 Man" },
+  "3m": { corner: "3M", label: "3 Man" },
+  "4m": { corner: "4M", label: "4 Man" },
+  "5m": { corner: "5M", label: "5 Man" },
+  "0m": { corner: "5M", label: "Red 5 Man" },
+  "6m": { corner: "6M", label: "6 Man" },
+  "7m": { corner: "7M", label: "7 Man" },
+  "8m": { corner: "8M", label: "8 Man" },
+  "9m": { corner: "9M", label: "9 Man" },
+  "1p": { corner: "1P", label: "1 Pin" },
+  "2p": { corner: "2P", label: "2 Pin" },
+  "3p": { corner: "3P", label: "3 Pin" },
+  "4p": { corner: "4P", label: "4 Pin" },
+  "5p": { corner: "5P", label: "5 Pin" },
+  "0p": { corner: "5P", label: "Red 5 Pin" },
+  "6p": { corner: "6P", label: "6 Pin" },
+  "7p": { corner: "7P", label: "7 Pin" },
+  "8p": { corner: "8P", label: "8 Pin" },
+  "9p": { corner: "9P", label: "9 Pin" },
+  "1s": { corner: "1S", label: "1 Sou" },
+  "2s": { corner: "2S", label: "2 Sou" },
+  "3s": { corner: "3S", label: "3 Sou" },
+  "4s": { corner: "4S", label: "4 Sou" },
+  "5s": { corner: "5S", label: "5 Sou" },
+  "0s": { corner: "5S", label: "Red 5 Sou" },
+  "6s": { corner: "6S", label: "6 Sou" },
+  "7s": { corner: "7S", label: "7 Sou" },
+  "8s": { corner: "8S", label: "8 Sou" },
+  "9s": { corner: "9S", label: "9 Sou" },
+  "1z": { corner: "E", label: "East" },
+  "2z": { corner: "S", label: "South" },
+  "3z": { corner: "W", label: "West" },
+  "4z": { corner: "N", label: "North" },
+  "5z": { corner: "Wh", label: "White" },
+  "6z": { corner: "G", label: "Green" },
+  "7z": { corner: "R", label: "Red" },
 };
 
 const conditionOptions = [
@@ -777,11 +820,15 @@ function TileFace({ tileId, size = "standard" }) {
   const normalId = normalizeRedFive(tileId);
   const label = getTileLabel(tileId);
   const isRedFive = tileId?.startsWith("0");
+  const visual = tileVisualLabels[tileId] || tileVisualLabels[normalId] || { corner: normalId, label };
+  const tileImage = tileFaceMap[tileId] || tileFaceMap[normalId];
 
   return (
     <span className={`tile-face ${size === "compact" ? "compact" : ""} ${isRedFive ? "aka" : ""}`} aria-hidden="true">
-      <span className="tile-glyph">{tileFaceMap[normalId] || normalId}</span>
-      {isRedFive && <span className="aka-mark">赤</span>}
+      <img className="tile-image" src={tileImage} alt="" draggable="false" />
+      <span className="tile-corner-label">{visual.corner}</span>
+      <span className="tile-readable-label">{visual.label}</span>
+      {isRedFive && <span className="aka-mark">Red</span>}
       <span className="tile-sr-label">{label}</span>
     </span>
   );
@@ -949,7 +996,8 @@ function getTileLabel(tileId) {
 
 function getTileOptionLabel(tileId) {
   const normalId = normalizeRedFive(tileId);
-  return `${tileFaceMap[normalId] || normalId} ${getTileLabel(tileId)}`;
+  const visual = tileVisualLabels[tileId] || tileVisualLabels[normalId];
+  return `${visual?.corner || normalId} ${visual?.label || getTileLabel(tileId)}`;
 }
 
 function formatMeldType(type) {

@@ -263,8 +263,8 @@ h1 {
 .tile-button,
 .tile-chip,
 .chip-button {
-  min-width: 54px;
-  min-height: 62px;
+  min-width: 56px;
+  min-height: 80px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
@@ -282,10 +282,20 @@ h1 {
 .hand-tile > button:first-child,
 .tile-button {
   position: relative;
-  display: grid;
-  place-items: center;
   padding: var(--space-xs);
   overflow: hidden;
+}
+
+.hand-tile > button:first-child {
+  display: grid;
+  place-items: center;
+}
+
+.tile-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .hand-tile > button:first-child.selected {
@@ -306,7 +316,7 @@ h1 {
 .tile-button::before {
   content: "";
   position: absolute;
-  inset: auto 5px 5px;
+  inset: auto 5px 21px;
   height: 3px;
   border-radius: 999px;
   background: var(--primary-light);
@@ -334,28 +344,65 @@ h1 {
 }
 
 .tile-face {
-  display: inline-grid;
+  display: grid;
   position: relative;
+  gap: 2px;
   place-items: center;
-  min-width: 38px;
+  width: 42px;
+  min-width: 42px;
   line-height: var(--leading-display);
 }
 
 .tile-face.compact {
-  min-width: 28px;
+  width: 34px;
+  min-width: 34px;
 }
 
-.tile-glyph {
-  font-size: var(--type-tile);
-  line-height: var(--leading-display);
+.tile-image {
+  display: block;
+  width: 36px;
+  height: 47px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px color-mix(in oklch, var(--ink) 18%, transparent));
+  pointer-events: none;
+  user-select: none;
 }
 
-.tile-face.compact .tile-glyph {
-  font-size: var(--type-tile-compact);
+.tile-face.compact .tile-image {
+  width: 28px;
+  height: 36px;
 }
 
-.aka .tile-glyph {
-  color: var(--danger);
+.tile-corner-label {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  min-width: 18px;
+  padding: 2px 3px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--surface) 92%, transparent);
+  color: var(--field-label);
+  font-size: var(--type-badge);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-strong);
+  line-height: 1;
+  text-align: center;
+}
+
+.tile-readable-label {
+  max-width: 52px;
+  color: var(--field-label);
+  font-size: var(--type-badge);
+  font-weight: var(--weight-title);
+  line-height: 1;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.tile-face.compact .tile-corner-label,
+.tile-face.compact .tile-readable-label {
+  display: none;
 }
 
 .aka-mark,
@@ -371,20 +418,23 @@ h1 {
 
 .aka-mark {
   position: absolute;
-  right: -4px;
-  bottom: -2px;
-  min-width: 18px;
-  height: 18px;
+  left: 50%;
+  bottom: 10px;
+  min-width: 24px;
+  height: 16px;
+  padding: 0 4px;
   background: var(--danger);
   color: var(--surface);
+  transform: translateX(-50%);
+  font-size: var(--type-badge);
 }
 
 .tile-count {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  min-width: 24px;
-  height: 18px;
+  position: relative;
+  z-index: 1;
+  min-width: 28px;
+  height: 16px;
+  margin-top: 1px;
   border: 1px solid var(--border-soft);
   background: var(--surface-soft);
   color: var(--text-soft);
