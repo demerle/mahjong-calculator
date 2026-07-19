@@ -5,7 +5,7 @@ Frontend contract for the Japanese riichi mahjong calculator backend.
 ## Base URL
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8005
 ```
 
 CORS is enabled for local frontend development.
@@ -128,4 +128,3 @@ Returns endpoint descriptions, tile groups, winds, meld types, supported conditi
 ## Advanced Manual Endpoint: `POST /calculate`
 
 The old endpoint still calculates from known `han` and `fu`. Keep it for advanced/manual use, but do not use it as the main beginner frontend workflow.
-

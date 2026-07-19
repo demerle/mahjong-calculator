@@ -9,7 +9,7 @@ from mahjong_score.hand_scoring import score_hand_from_data
 
 
 HOST = "127.0.0.1"
-PORT = 8000
+PORT = 8005
 
 
 class MahjongScoreHandler(BaseHTTPRequestHandler):

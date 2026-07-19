@@ -35,6 +35,43 @@ const tileGroups = [
 const allTiles = tileGroups.flatMap((group) => group.tiles);
 const windOptions = ["east", "south", "west", "north"];
 
+const tileFaceMap = {
+  "1m": "🀇",
+  "2m": "🀈",
+  "3m": "🀉",
+  "4m": "🀊",
+  "5m": "🀋",
+  "6m": "🀌",
+  "7m": "🀍",
+  "8m": "🀎",
+  "9m": "🀏",
+  "1p": "🀙",
+  "2p": "🀚",
+  "3p": "🀛",
+  "4p": "🀜",
+  "5p": "🀝",
+  "6p": "🀞",
+  "7p": "🀟",
+  "8p": "🀠",
+  "9p": "🀡",
+  "1s": "🀐",
+  "2s": "🀑",
+  "3s": "🀒",
+  "4s": "🀓",
+  "5s": "🀔",
+  "6s": "🀕",
+  "7s": "🀖",
+  "8s": "🀗",
+  "9s": "🀘",
+  "1z": "🀀",
+  "2z": "🀁",
+  "3z": "🀂",
+  "4z": "🀃",
+  "5z": "🀆",
+  "6z": "🀅",
+  "7z": "🀄",
+};
+
 const conditionOptions = [
   { key: "riichi", label: "Riichi" },
   { key: "double_riichi", label: "Double riichi" },
@@ -91,6 +128,7 @@ function App() {
 
   function updateHand(field, value) {
     setHand((currentHand) => ({ ...currentHand, [field]: value }));
+    setResult(null);
     setError("");
   }
 
@@ -267,7 +305,7 @@ function App() {
                 <option value="">Choose from entered tiles</option>
                 {uniqueHandTiles.map((tileId) => (
                   <option key={tileId} value={tileId}>
-                    {getTileLabel(tileId)}
+                    {getTileOptionLabel(tileId)}
                   </option>
                 ))}
               </select>
@@ -449,11 +487,17 @@ function TileTray({ tiles, winningTile, selectedMeldTiles, onRemove, onSelectFor
                 type="button"
                 onClick={() => onSelectForMeld(tileId, index)}
                 className={isSelected ? "selected" : ""}
+                aria-pressed={isSelected}
                 aria-label={`Select ${getTileLabel(tileId)} hand tile ${index + 1}`}
               >
-                {getTileLabel(tileId)}
+                <TileFace tileId={tileId} />
               </button>
-              <button type="button" className="remove-tile" onClick={() => onRemove(index)} aria-label="Remove tile">
+              <button
+                type="button"
+                className="remove-tile"
+                onClick={() => onRemove(index)}
+                aria-label={`Remove ${getTileLabel(tileId)}`}
+              >
                 <X size={14} />
               </button>
             </div>
@@ -481,9 +525,12 @@ function TilePalette({ tileCounts, onAddTile }) {
                   className={tileId.startsWith("0") ? "tile-button red-five" : "tile-button"}
                   disabled={disabled}
                   onClick={() => onAddTile(tileId)}
-                  aria-label={`Add ${getTileLabel(tileId)}`}
+                  aria-label={`Add ${getTileLabel(tileId)}${disabled ? ", already have four" : ""}`}
                 >
-                  {getTileLabel(tileId)}
+                  <TileFace tileId={tileId} />
+                  <span className="tile-count" aria-hidden="true">
+                    {count}/4
+                  </span>
                 </button>
               );
             })}
@@ -570,7 +617,7 @@ function MeldBuilder({ meldType, selectedMeldTiles, melds, onMeldTypeChange, onA
           {melds.map((meld, index) => (
             <div key={`${meld.type}-${index}`} className="meld-item">
               <span>{formatMeldType(meld.type)}</span>
-              <strong>{meld.tiles.map(getTileLabel).join(" ")}</strong>
+              <TileInlineList tiles={meld.tiles} />
               <button type="button" onClick={() => onRemoveMeld(index)} aria-label="Remove called group">
                 <Eraser size={16} />
               </button>
@@ -625,7 +672,7 @@ function TileSelect({ label, value, onChange }) {
       <select value={value} onChange={(event) => onChange(event.target.value)}>
         {allTiles.map((tileId) => (
           <option key={tileId} value={tileId}>
-            {getTileLabel(tileId)}
+            {getTileOptionLabel(tileId)}
           </option>
         ))}
       </select>
@@ -641,8 +688,14 @@ function ChipList({ tiles, onRemove }) {
   return (
     <div className="chip-row">
       {tiles.map((tileId, index) => (
-        <button key={`${tileId}-${index}`} className="chip-button" type="button" onClick={() => onRemove(index)}>
-          {getTileLabel(tileId)}
+        <button
+          key={`${tileId}-${index}`}
+          className="chip-button"
+          type="button"
+          onClick={() => onRemove(index)}
+          aria-label={`Remove ${getTileLabel(tileId)}`}
+        >
+          <TileFace tileId={tileId} size="compact" />
           <X size={14} />
         </button>
       ))}
@@ -651,7 +704,35 @@ function ChipList({ tiles, onRemove }) {
 }
 
 function TileChip({ tileId }) {
-  return <span className="tile-chip">{getTileLabel(tileId)}</span>;
+  return (
+    <span className="tile-chip" aria-label={getTileLabel(tileId)}>
+      <TileFace tileId={tileId} size="compact" />
+    </span>
+  );
+}
+
+function TileInlineList({ tiles }) {
+  return (
+    <strong className="tile-inline-list">
+      {tiles.map((tileId, index) => (
+        <TileFace key={`${tileId}-${index}`} tileId={tileId} size="compact" />
+      ))}
+    </strong>
+  );
+}
+
+function TileFace({ tileId, size = "standard" }) {
+  const normalId = normalizeRedFive(tileId);
+  const label = getTileLabel(tileId);
+  const isRedFive = tileId?.startsWith("0");
+
+  return (
+    <span className={`tile-face ${size === "compact" ? "compact" : ""} ${isRedFive ? "aka" : ""}`} aria-hidden="true">
+      <span className="tile-glyph">{tileFaceMap[normalId] || normalId}</span>
+      {isRedFive && <span className="aka-mark">赤</span>}
+      <span className="tile-sr-label">{label}</span>
+    </span>
+  );
 }
 
 function AdvancedConditions({ conditions, rules, onToggleCondition, onToggleRule }) {
@@ -806,6 +887,11 @@ function getTileLabel(tileId) {
   }
 
   return tileId;
+}
+
+function getTileOptionLabel(tileId) {
+  const normalId = normalizeRedFive(tileId);
+  return `${tileFaceMap[normalId] || normalId} ${getTileLabel(tileId)}`;
 }
 
 function formatMeldType(type) {

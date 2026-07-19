@@ -16,7 +16,7 @@ export default defineConfig({
   webServer: [
     {
       command: ".venv/bin/python -m mahjong_score.api",
-      url: "http://127.0.0.1:8000/health",
+      url: "http://127.0.0.1:8005/health",
       reuseExistingServer: true,
       cwd: "..",
       timeout: 10000,

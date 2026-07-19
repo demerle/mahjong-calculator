@@ -16,7 +16,7 @@ python -m venv .venv
 The backend starts at:
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8005
 ```
 
 ## Run the React Frontend
@@ -46,19 +46,19 @@ receive han, fu, yaku, payment, and fu details.
 ### Health check
 
 ```bash
-curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8005/health
 ```
 
 ### Supported rules
 
 ```bash
-curl http://127.0.0.1:8000/rules
+curl http://127.0.0.1:8005/rules
 ```
 
 ### Score a hand from tiles
 
 ```bash
-curl -X POST http://127.0.0.1:8000/score-hand \
+curl -X POST http://127.0.0.1:8005/score-hand \
   -H "Content-Type: application/json" \
   -d '{
     "tiles": ["2m", "2m", "4m", "4m", "4m", "3p", "3p", "3p", "5p", "6p", "7p", "4s", "4s", "4s"],
@@ -73,7 +73,7 @@ curl -X POST http://127.0.0.1:8000/score-hand \
 ### Advanced manual han/fu calculation
 
 ```bash
-curl -X POST http://127.0.0.1:8000/calculate \
+curl -X POST http://127.0.0.1:8005/calculate \
   -H "Content-Type: application/json" \
   -d '{
     "han": 3,

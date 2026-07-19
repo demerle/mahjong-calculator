@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-19T12:00:00-04:00",
+  "title": "Design System: Riichi Score Calculator",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink Black",
+        "canonical": "#111827",
+        "tonalRamp": ["oklch(15% 0.02 260)", "oklch(25% 0.02 260)", "oklch(35% 0.02 260)", "oklch(45% 0.02 260)", "oklch(58% 0.02 260)", "oklch(72% 0.02 260)", "oklch(86% 0.02 260)", "oklch(95% 0.02 260)"]
+      },
+      "surface-bg": {
+        "role": "neutral",
+        "displayName": "Table Mist",
+        "canonical": "#f4f7f6",
+        "tonalRamp": ["oklch(15% 0.01 175)", "oklch(25% 0.01 175)", "oklch(35% 0.01 175)", "oklch(50% 0.01 175)", "oklch(65% 0.01 175)", "oklch(80% 0.01 175)", "oklch(90% 0.01 175)", "oklch(97% 0.01 175)"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "White Tile",
+        "canonical": "#ffffff",
+        "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(38% 0 0)", "oklch(52% 0 0)", "oklch(68% 0 0)", "oklch(82% 0 0)", "oklch(93% 0 0)", "oklch(100% 0 0)"]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Table Green",
+        "canonical": "#047857",
+        "tonalRamp": ["oklch(15% 0.08 165)", "oklch(25% 0.09 165)", "oklch(35% 0.10 165)", "oklch(45% 0.11 165)", "oklch(58% 0.12 165)", "oklch(72% 0.10 165)", "oklch(86% 0.06 165)", "oklch(95% 0.03 165)"]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Winning Red",
+        "canonical": "#b42318",
+        "tonalRamp": ["oklch(15% 0.08 30)", "oklch(25% 0.10 30)", "oklch(35% 0.12 30)", "oklch(48% 0.15 30)", "oklch(60% 0.13 30)", "oklch(74% 0.10 30)", "oklch(87% 0.06 30)", "oklch(96% 0.03 30)"]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Readiness Amber",
+        "canonical": "#92400e",
+        "tonalRamp": ["oklch(15% 0.07 65)", "oklch(25% 0.08 65)", "oklch(35% 0.09 65)", "oklch(48% 0.10 65)", "oklch(62% 0.09 65)", "oklch(76% 0.07 65)", "oklch(88% 0.05 65)", "oklch(96% 0.03 65)"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page title only; never a decorative theme font."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Panel titles and major UI landmarks."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Field labels, tile group headings, and compact section labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Instructional copy, result details, and form values."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, badges, chips, and compact status text."
+      },
+      "tile": {
+        "displayName": "Tile Glyph",
+        "purpose": "Mahjong tile symbols in the palette and entered hand, rendered through the browser's system symbol fallback."
+      },
+      "tile-compact": {
+        "displayName": "Compact Tile Glyph",
+        "purpose": "Mahjong tile symbols inside chips, melds, and compact lists, rendered through the browser's system symbol fallback."
+      },
+      "badge": {
+        "displayName": "Tile Badge",
+        "purpose": "Small count and red-five markers attached to tile controls."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel-ambient",
+        "value": "0 20px 50px rgba(31, 41, 51, 0.08)",
+        "purpose": "Top-level form and result panels only."
+      },
+      {
+        "name": "winning-tile-inset",
+        "value": "inset 0 -4px 0 #fca5a5",
+        "purpose": "Marks the winning tile without changing its shape."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-lift",
+        "value": "transform 140ms ease, border-color 140ms ease, background-color 140ms ease",
+        "purpose": "Fast feedback for buttons and tile controls."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "workspace-collapse",
+        "value": "960px"
+      },
+      {
+        "name": "form-collapse",
+        "value": "720px"
+      },
+      {
+        "name": "compact-controls",
+        "value": "480px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The scoring action; green, direct, and icon-friendly.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M22 2 11 13\"/><path d=\"m22 2-7 20-4-9-9-4Z\"/></svg><span>Score hand</span></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 16px; border: 1px solid #047857; border-radius: 8px; background: #047857; color: #fff; font: 850 0.9rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease; } .ds-btn-primary svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; } .ds-btn-primary:hover { transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 3px solid #a7f3d0; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Utility action for reset, example, drawer, and add flows.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"M12 5v14\"/></svg><span>Add group</span></button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #334155; font: 850 0.9rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease; } .ds-btn-secondary svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; } .ds-btn-secondary:hover { transform: translateY(-1px); } .ds-btn-secondary:focus-visible { outline: 3px solid #a7f3d0; outline-offset: 2px; }"
+    },
+    {
+      "name": "Tile Button",
+      "kind": "custom",
+      "refersTo": "tile-button",
+      "description": "Stable tile-sized control; the future home for real mahjong tile faces.",
+      "html": "<button class=\"ds-tile-button\" type=\"button\" aria-label=\"Add one man\"><span>1m</span></button>",
+      "css": ".ds-tile-button { display: inline-grid; place-items: center; min-width: 48px; min-height: 54px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #111827; font: 900 0.9rem/1 Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease; } .ds-tile-button:hover { transform: translateY(-1px); } .ds-tile-button:focus-visible { outline: 3px solid #a7f3d0; outline-offset: 2px; } .ds-tile-button[aria-pressed=\"true\"] { border-color: #047857; background: #d1fae5; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Standard field shape for selects and numeric inputs.",
+      "html": "<label class=\"ds-field\"><span>Winner seat</span><select><option>East</option><option>South</option></select></label>",
+      "css": ".ds-field { display: grid; gap: 8px; color: #334e68; font: 850 0.92rem/1.25 Inter, ui-sans-serif, system-ui, sans-serif; } .ds-field select { width: 100%; min-height: 46px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #1f2933; padding: 0 12px; font: 400 1rem/1.5 Inter, ui-sans-serif, system-ui, sans-serif; } .ds-field select:focus-visible { outline: 3px solid #a7f3d0; outline-offset: 2px; border-color: #047857; }"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Top-level working surface for hand entry or results.",
+      "html": "<section class=\"ds-panel\"><div class=\"ds-panel-title\"><span class=\"ds-title-icon\">✓</span><div><h2>Enter the Winning Hand</h2><p>8 of 14 tiles selected</p></div></div></section>",
+      "css": ".ds-panel { padding: 24px; border: 1px solid #d9e2ec; border-radius: 8px; background: rgba(255,255,255,0.94); box-shadow: 0 20px 50px rgba(31,41,51,0.08); color: #1f2933; } .ds-panel-title { display: flex; align-items: center; gap: 12px; } .ds-title-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 8px; background: #ecfdf3; color: #047857; font-weight: 900; } .ds-panel h2 { margin: 0 0 3px; color: #111827; font: 850 1.2rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif; } .ds-panel p { margin: 0; color: #66788a; font: 400 1rem/1.5 Inter, ui-sans-serif, system-ui, sans-serif; }"
+    },
+    {
+      "name": "Readiness Message",
+      "kind": "custom",
+      "refersTo": "message",
+      "description": "Explains whether the hand is ready or what is missing.",
+      "html": "<div class=\"ds-readiness\" role=\"status\"><strong>Before scoring</strong><ul><li>Add 6 more tiles.</li><li>Choose which entered tile completed the hand.</li></ul></div>",
+      "css": ".ds-readiness { display: grid; gap: 8px; padding: 12px; border: 1px solid #fde68a; border-radius: 8px; background: #fffbeb; color: #92400e; font: 750 1rem/1.35 Inter, ui-sans-serif, system-ui, sans-serif; } .ds-readiness strong { font-size: 0.92rem; } .ds-readiness ul { display: grid; gap: 5px; margin: 0; padding-left: 20px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Tile Table",
+    "overview": "The interface should feel like a calm scoring surface laid beside an actual game: organized, legible, and focused on recognition. The product is not a Japanese-themed decoration exercise. Its character comes from mahjong tile faces, grouped suits, table-like spacing, and clear scoring feedback.\n\nThis is a product UI for casual and learning users, so clarity beats atmosphere. Every screen should reduce notation burden, reveal what is still missing, and make the scoring result feel explainable. The current system is restrained: pale neutral surfaces, a single green primary action language, red only for errors and winning-tile emphasis, and 8px component geometry throughout.",
+    "keyCharacteristics": [
+      "Restrained product density with clear two-column desktop structure and single-column mobile behavior.",
+      "Real tile recognition should be the signature visual layer; surrounding chrome stays quiet.",
+      "Green is the action and success language; red is reserved for error, red-five, and winning-tile distinction.",
+      "Components use consistent 8px corners, clear borders, and direct labels.",
+      "Readiness, error, and result states are visible explanations, not decorative notices."
+    ],
+    "rules": [
+      {
+        "name": "The Tile Color Rule",
+        "body": "Tile visuals may carry suit identity and red-five meaning; page chrome must not compete with them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Is Meaning Rule",
+        "body": "Red is not a theme color. It means error, red-five, or winning-tile emphasis.",
+        "section": "colors"
+      },
+      {
+        "name": "The Notation Reduction Rule",
+        "body": "Typography must support tile recognition, not replace it. Text labels explain choices, but tile faces should carry the primary tile identity.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Brush Font Rule",
+        "body": "Brush, calligraphic, faux-Japanese, or menu-style display fonts are prohibited.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Lift Rule",
+        "body": "Large ambient shadow belongs to top-level panels only. Buttons, chips, fields, and tiles stay border-defined unless interaction state demands movement.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use real mahjong tile visuals as the primary representation for tile selection and entered hands.",
+      "Do preserve the 8px component radius unless a control is intentionally pill-shaped, such as backend status.",
+      "Do use Table Green for primary actions, selected controls, and ready/success states.",
+      "Do keep advanced options grouped and progressively disclosed.",
+      "Do pair every color-coded tile or scoring state with text, icon, shape, position, or accessible label.",
+      "Do keep the desktop layout focused on hand entry plus result, and collapse to one column below 960px."
+    ],
+    "donts": [
+      "Don't use casino styling, decorative Japanese tropes, brush fonts, lanterns, temple imagery, or heavy red-and-black theming.",
+      "Don't make shorthand tile codes such as `1m` or `3p` the primary tile representation once tile faces are available.",
+      "Don't create expert-only density. Casual users must see what to do next.",
+      "Don't use red as general decoration. Red means error, red-five, or winning-tile distinction.",
+      "Don't add decorative shadows to every button, chip, and tile. Top-level panels already own elevation.",
+      "Don't replace familiar form controls with custom affordances unless the custom control is more accessible and easier to understand."
+    ]
+  }
+}
