@@ -110,6 +110,7 @@ function App() {
   const [doraDraft, setDoraDraft] = useState("1m");
   const [uraDoraDraft, setUraDoraDraft] = useState("1m");
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [freshTileIndex, setFreshTileIndex] = useState(null);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -143,6 +144,7 @@ function App() {
     if (currentCount >= 4 || hand.tiles.length >= 18) {
       return;
     }
+    setFreshTileIndex(hand.tiles.length);
     updateHand("tiles", [...hand.tiles, tileId]);
   }
 
@@ -158,6 +160,7 @@ function App() {
       melds: [],
     }));
     setSelectedMeldTiles([]);
+    setFreshTileIndex(null);
     setResult(null);
     setError("");
   }
@@ -183,6 +186,7 @@ function App() {
       { type: meldType, tiles: selectedMeldTiles.map((tile) => tile.id) },
     ]);
     setSelectedMeldTiles([]);
+    setFreshTileIndex(null);
   }
 
   function removeMeld(index) {
@@ -213,6 +217,7 @@ function App() {
   function resetAll() {
     setHand(initialHand);
     setSelectedMeldTiles([]);
+    setFreshTileIndex(null);
     setResult(null);
     setError("");
   }
@@ -240,6 +245,7 @@ function App() {
       conditions: { riichi: true },
     });
     setSelectedMeldTiles([]);
+    setFreshTileIndex(null);
     setResult(null);
     setError("");
   }
@@ -285,12 +291,13 @@ function App() {
                 subtitle={`${hand.tiles.length} of 14 tiles selected`}
               />
 
-              <ReadinessPanel messages={readinessMessages} />
+              <ReadinessPanel messages={readinessMessages} tileCount={hand.tiles.length} />
 
               <TileTray
                 tiles={hand.tiles}
                 winningTile={hand.winning_tile}
                 selectedMeldTiles={selectedMeldTiles}
+                freshTileIndex={freshTileIndex}
                 onRemove={removeHandTile}
                 onSelectForMeld={toggleMeldSelection}
               />
@@ -432,24 +439,45 @@ function App() {
   );
 }
 
-function ReadinessPanel({ messages }) {
+function ReadinessPanel({ messages, tileCount }) {
+  const progress = Math.min(tileCount, 14);
+
   if (messages.length === 0) {
     return (
       <div className="message ready-message">
         <CircleCheck size={18} />
         <span>Ready to score.</span>
+        <ReadinessMeter progress={progress} />
       </div>
     );
   }
 
   return (
     <div className="readiness-panel" aria-live="polite">
-      <strong>Before scoring</strong>
+      <div className="readiness-heading">
+        <strong>Before scoring</strong>
+        <span>{progress}/14 tiles</span>
+      </div>
+      <ReadinessMeter progress={progress} />
       <ul>
         {messages.map((message) => (
           <li key={message}>{message}</li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function ReadinessMeter({ progress }) {
+  return (
+    <div
+      className="readiness-meter"
+      aria-hidden="true"
+      style={{ "--readiness-progress": `${(progress / 14) * 100}%` }}
+    >
+      {Array.from({ length: 14 }, (_, index) => (
+        <span key={index} className={index < progress ? "filled" : ""} />
+      ))}
     </div>
   );
 }
@@ -478,7 +506,7 @@ function PanelTitle({ icon, title, subtitle }) {
   );
 }
 
-function TileTray({ tiles, winningTile, selectedMeldTiles, onRemove, onSelectForMeld }) {
+function TileTray({ tiles, winningTile, selectedMeldTiles, freshTileIndex, onRemove, onSelectForMeld }) {
   return (
     <section className="tile-tray">
       {tiles.length === 0 ? (
@@ -490,7 +518,10 @@ function TileTray({ tiles, winningTile, selectedMeldTiles, onRemove, onSelectFor
           const isWinningTile = normalizeRedFive(tileId) === normalizeRedFive(winningTile);
 
           return (
-            <div className={`hand-tile ${isWinningTile ? "winning" : ""}`} key={selectionKey}>
+            <div
+              className={`hand-tile ${isWinningTile ? "winning" : ""} ${index === freshTileIndex ? "fresh" : ""}`}
+              key={selectionKey}
+            >
               <button
                 type="button"
                 onClick={() => onSelectForMeld(tileId, index)}
@@ -526,14 +557,21 @@ function TilePalette({ tileCounts, onAddTile }) {
             {group.tiles.map((tileId) => {
               const count = tileCounts[normalizeRedFive(tileId)] || 0;
               const disabled = count >= 4;
+              const tileClassName = [
+                "tile-button",
+                tileId.startsWith("0") ? "red-five" : "",
+                disabled ? "is-full" : "",
+              ].filter(Boolean).join(" ");
+
               return (
                 <button
                   key={tileId}
                   type="button"
-                  className={tileId.startsWith("0") ? "tile-button red-five" : "tile-button"}
+                  className={tileClassName}
                   disabled={disabled}
                   onClick={() => onAddTile(tileId)}
                   aria-label={`Add ${getTileLabel(tileId)}${disabled ? ", already have four" : ""}`}
+                  style={{ "--tile-fill": count / 4 }}
                 >
                   <TileFace tileId={tileId} />
                   <span className="tile-count" aria-hidden="true">

@@ -40,6 +40,8 @@
   --space-2xl: 24px;
   --space-3xl: 32px;
   --space-page: 28px;
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --font-ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --type-display: clamp(2rem, 6vw, 3.8rem);
   --type-headline: 1.2rem;
@@ -248,6 +250,9 @@ h1 {
   border: 1px dashed var(--border-muted);
   border-radius: 8px;
   background: var(--surface-soft);
+  transition:
+    background-color 180ms var(--ease-out-quart),
+    border-color 180ms var(--ease-out-quart);
 }
 
 .hand-tile {
@@ -266,6 +271,12 @@ h1 {
   color: var(--ink);
   font-weight: var(--weight-strong);
   cursor: pointer;
+  transition:
+    background-color 180ms var(--ease-out-quart),
+    border-color 180ms var(--ease-out-quart),
+    color 180ms var(--ease-out-quart),
+    filter 180ms var(--ease-out-quart),
+    transform 180ms var(--ease-out-expo);
 }
 
 .hand-tile > button:first-child,
@@ -274,16 +285,37 @@ h1 {
   display: grid;
   place-items: center;
   padding: var(--space-xs);
+  overflow: hidden;
 }
 
 .hand-tile > button:first-child.selected {
   border-color: var(--primary);
   background: var(--primary-soft);
+  transform: translateY(-3px) scale(1.035);
 }
 
 .hand-tile.winning > button:first-child {
   border-color: var(--danger);
   box-shadow: inset 0 -4px 0 var(--danger-accent);
+}
+
+.hand-tile.fresh > button:first-child {
+  animation: tile-arrive 420ms var(--ease-out-expo);
+}
+
+.tile-button::before {
+  content: "";
+  position: absolute;
+  inset: auto 5px 5px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--primary-light);
+  opacity: 0.65;
+  transform: scaleX(var(--tile-fill, 0));
+  transform-origin: left;
+  transition:
+    opacity 180ms var(--ease-out-quart),
+    transform 220ms var(--ease-out-expo);
 }
 
 .remove-tile {
@@ -390,8 +422,25 @@ h1 {
 
 .tile-button:disabled {
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 1;
   transform: none;
+}
+
+.tile-button.is-full {
+  border-color: var(--border-soft);
+  background: var(--surface-raised);
+  color: var(--text-muted);
+}
+
+.tile-button.is-full::before {
+  background: var(--text-muted);
+  opacity: 0.7;
+}
+
+.tile-button.is-full .tile-count {
+  border-color: var(--border-muted);
+  background: var(--text-muted);
+  color: var(--surface);
 }
 
 .red-five {
@@ -457,6 +506,11 @@ h1 {
 .tile-button:hover,
 .hand-tile > button:first-child:hover {
   transform: translateY(-1px);
+}
+
+.tile-button:not(:disabled):hover {
+  border-color: var(--primary-light);
+  background: var(--primary-tint);
 }
 
 .segment-options button:active,
@@ -671,10 +725,64 @@ select:focus-visible {
   color: var(--warning);
 }
 
-.readiness-panel strong {
+.readiness-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.readiness-panel strong,
+.readiness-heading span {
   font-size: var(--type-title);
   font-weight: var(--weight-title);
   line-height: var(--leading-title);
+}
+
+.readiness-meter {
+  --meter-color: var(--warning);
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  gap: var(--space-2xs);
+  width: 100%;
+}
+
+.readiness-meter span {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklch, currentColor 18%, transparent);
+  overflow: hidden;
+}
+
+.readiness-meter span::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 260ms var(--ease-out-expo);
+}
+
+.readiness-meter span.filled::before {
+  transform: scaleX(1);
+}
+
+.ready-message {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.ready-message .readiness-meter {
+  grid-column: 1 / -1;
+  color: var(--primary);
+}
+
+.readiness-panel .readiness-meter {
+  color: var(--warning);
 }
 
 .readiness-panel ul {
@@ -801,6 +909,23 @@ select:focus-visible {
   min-height: 320px;
 }
 
+@keyframes tile-arrive {
+  0% {
+    filter: saturate(1.25);
+    transform: translateY(-10px) scale(0.92);
+  }
+
+  58% {
+    filter: saturate(1.08);
+    transform: translateY(2px) scale(1.04);
+  }
+
+  100% {
+    filter: saturate(1);
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 960px) {
   .workspace {
     grid-template-columns: 1fr;
@@ -875,5 +1000,18 @@ select:focus-visible {
   .tile-button:hover,
   .hand-tile > button:first-child:hover {
     transform: none;
+  }
+
+  .hand-tile.fresh > button:first-child {
+    animation: none;
+  }
+
+  .hand-tile > button:first-child.selected {
+    transform: none;
+  }
+
+  .readiness-meter span::before,
+  .tile-button::before {
+    transition: none;
   }
 }
