@@ -278,79 +278,85 @@ function App() {
 
         <div className="workspace">
           <form className="score-form" onSubmit={submitHand}>
-            <PanelTitle
-              icon={<Calculator size={20} />}
-              title="Enter the Winning Hand"
-              subtitle={`${hand.tiles.length} of 14 tiles selected`}
-            />
-
-            <ReadinessPanel messages={readinessMessages} />
-
-            <TileTray
-              tiles={hand.tiles}
-              winningTile={hand.winning_tile}
-              selectedMeldTiles={selectedMeldTiles}
-              onRemove={removeHandTile}
-              onSelectForMeld={toggleMeldSelection}
-            />
-
-            <TilePalette tileCounts={tileCounts} onAddTile={addHandTile} />
-
-            <label className="field">
-              <span>Winning tile</span>
-              <select
-                value={hand.winning_tile}
-                onChange={(event) => updateHand("winning_tile", event.target.value)}
-              >
-                <option value="">Choose from entered tiles</option>
-                {uniqueHandTiles.map((tileId) => (
-                  <option key={tileId} value={tileId}>
-                    {getTileOptionLabel(tileId)}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="section-grid">
-              <SegmentedControl
-                label="Win type"
-                value={hand.win_type}
-                options={[
-                  { label: "Ron", value: "ron" },
-                  { label: "Tsumo", value: "tsumo" },
-                ]}
-                onChange={(value) => updateHand("win_type", value)}
+            <section className="form-section hand-section">
+              <PanelTitle
+                icon={<Calculator size={20} />}
+                title="Enter the Winning Hand"
+                subtitle={`${hand.tiles.length} of 14 tiles selected`}
               />
 
-              <SelectField
-                label="Winner seat"
-                value={hand.winner_seat}
-                options={windOptions}
-                onChange={(value) => updateHand("winner_seat", value)}
-              />
+              <ReadinessPanel messages={readinessMessages} />
 
-              <SelectField
-                label="Round wind"
-                value={hand.round_wind}
-                options={windOptions}
-                onChange={(value) => updateHand("round_wind", value)}
+              <TileTray
+                tiles={hand.tiles}
+                winningTile={hand.winning_tile}
+                selectedMeldTiles={selectedMeldTiles}
+                onRemove={removeHandTile}
+                onSelectForMeld={toggleMeldSelection}
               />
-            </div>
+            </section>
 
-            <div className="field-grid">
-              <NumberField
-                label="Honba"
-                min="0"
-                value={hand.honba}
-                onChange={(value) => updateNumber("honba", value)}
-              />
-              <NumberField
-                label="Riichi sticks"
-                min="0"
-                value={hand.riichi_sticks}
-                onChange={(value) => updateNumber("riichi_sticks", value)}
-              />
-            </div>
+            <section className="form-section tile-picker-section">
+              <TilePalette tileCounts={tileCounts} onAddTile={addHandTile} />
+            </section>
+
+            <section className="form-section context-section">
+              <label className="field">
+                <span>Winning tile</span>
+                <select
+                  value={hand.winning_tile}
+                  onChange={(event) => updateHand("winning_tile", event.target.value)}
+                >
+                  <option value="">Choose from entered tiles</option>
+                  {uniqueHandTiles.map((tileId) => (
+                    <option key={tileId} value={tileId}>
+                      {getTileOptionLabel(tileId)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="section-grid">
+                <SegmentedControl
+                  label="Win type"
+                  value={hand.win_type}
+                  options={[
+                    { label: "Ron", value: "ron" },
+                    { label: "Tsumo", value: "tsumo" },
+                  ]}
+                  onChange={(value) => updateHand("win_type", value)}
+                />
+
+                <SelectField
+                  label="Winner seat"
+                  value={hand.winner_seat}
+                  options={windOptions}
+                  onChange={(value) => updateHand("winner_seat", value)}
+                />
+
+                <SelectField
+                  label="Round wind"
+                  value={hand.round_wind}
+                  options={windOptions}
+                  onChange={(value) => updateHand("round_wind", value)}
+                />
+              </div>
+
+              <div className="field-grid">
+                <NumberField
+                  label="Honba"
+                  min="0"
+                  value={hand.honba}
+                  onChange={(value) => updateNumber("honba", value)}
+                />
+                <NumberField
+                  label="Riichi sticks"
+                  min="0"
+                  value={hand.riichi_sticks}
+                  onChange={(value) => updateNumber("riichi_sticks", value)}
+                />
+              </div>
+            </section>
 
             <MeldBuilder
               meldType={meldType}
@@ -394,27 +400,29 @@ function App() {
               />
             )}
 
-            {error && (
-              <div className="message error-message">
-                <CircleAlert size={18} />
-                <span>{error}</span>
-              </div>
-            )}
+            <section className="form-section submit-section">
+              {error && (
+                <div className="message error-message">
+                  <CircleAlert size={18} />
+                  <span>{error}</span>
+                </div>
+              )}
 
-            <div className="actions">
-              <button className="secondary-button" type="button" onClick={resetAll}>
-                <RotateCcw size={18} />
-                Reset
-              </button>
-              <button className="secondary-button" type="button" onClick={loadExampleHand}>
-                <Sparkles size={18} />
-                Example
-              </button>
-              <button className="primary-button" type="submit" disabled={isLoading}>
-                <Send size={18} />
-                {isLoading ? "Scoring" : "Score hand"}
-              </button>
-            </div>
+              <div className="actions">
+                <button className="secondary-button" type="button" onClick={resetAll}>
+                  <RotateCcw size={18} />
+                  Reset
+                </button>
+                <button className="secondary-button" type="button" onClick={loadExampleHand}>
+                  <Sparkles size={18} />
+                  Example
+                </button>
+                <button className="primary-button" type="submit" disabled={isLoading}>
+                  <Send size={18} />
+                  {isLoading ? "Scoring" : "Score hand"}
+                </button>
+              </div>
+            </section>
           </form>
 
           <ResultPanel result={result} />
@@ -644,23 +652,29 @@ function DoraSection({
   return (
     <section className="helper-section">
       <PanelTitle icon={<Sparkles size={20} />} title="Dora Indicators" subtitle="Add indicator tiles, not the dora tile itself" />
-      <div className="meld-row">
-        <TileSelect label="Dora" value={doraDraft} onChange={onDoraDraftChange} />
-        <button className="secondary-button" type="button" onClick={onAddDora}>
-          <Plus size={18} />
-          Add dora
-        </button>
-      </div>
-      <ChipList tiles={doraIndicators} onRemove={onRemoveDora} />
+      <div className="dora-groups">
+        <div className="dora-group">
+          <div className="meld-row">
+            <TileSelect label="Dora" value={doraDraft} onChange={onDoraDraftChange} />
+            <button className="secondary-button" type="button" onClick={onAddDora}>
+              <Plus size={18} />
+              Add dora
+            </button>
+          </div>
+          <ChipList tiles={doraIndicators} onRemove={onRemoveDora} />
+        </div>
 
-      <div className="meld-row">
-        <TileSelect label="Ura dora" value={uraDoraDraft} onChange={onUraDoraDraftChange} />
-        <button className="secondary-button" type="button" onClick={onAddUraDora}>
-          <Plus size={18} />
-          Add ura
-        </button>
+        <div className="dora-group">
+          <div className="meld-row">
+            <TileSelect label="Ura dora" value={uraDoraDraft} onChange={onUraDoraDraftChange} />
+            <button className="secondary-button" type="button" onClick={onAddUraDora}>
+              <Plus size={18} />
+              Add ura
+            </button>
+          </div>
+          <ChipList tiles={uraDoraIndicators} onRemove={onRemoveUraDora} />
+        </div>
       </div>
-      <ChipList tiles={uraDoraIndicators} onRemove={onRemoveUraDora} />
     </section>
   );
 }
@@ -738,27 +752,33 @@ function TileFace({ tileId, size = "standard" }) {
 function AdvancedConditions({ conditions, rules, onToggleCondition, onToggleRule }) {
   return (
     <section className="advanced-panel">
-      <div className="toggle-grid">
-        {conditionOptions.map((condition) => (
-          <label key={condition.key} className="check-row">
-            <input type="checkbox" checked={Boolean(conditions[condition.key])} onChange={() => onToggleCondition(condition.key)} />
-            <span>{condition.label}</span>
-          </label>
-        ))}
+      <div className="advanced-group">
+        <span className="advanced-label">Win conditions</span>
+        <div className="toggle-grid">
+          {conditionOptions.map((condition) => (
+            <label key={condition.key} className="check-row">
+              <input type="checkbox" checked={Boolean(conditions[condition.key])} onChange={() => onToggleCondition(condition.key)} />
+              <span>{condition.label}</span>
+            </label>
+          ))}
+        </div>
       </div>
-      <div className="toggle-grid">
-        <label className="check-row">
-          <input type="checkbox" checked={rules.has_aka_dora} onChange={() => onToggleRule("has_aka_dora")} />
-          <span>Red fives enabled</span>
-        </label>
-        <label className="check-row">
-          <input type="checkbox" checked={rules.has_open_tanyao} onChange={() => onToggleRule("has_open_tanyao")} />
-          <span>Open tanyao allowed</span>
-        </label>
-        <label className="check-row">
-          <input type="checkbox" checked={rules.has_double_yakuman} onChange={() => onToggleRule("has_double_yakuman")} />
-          <span>Double yakuman enabled</span>
-        </label>
+      <div className="advanced-group">
+        <span className="advanced-label">Rule options</span>
+        <div className="toggle-grid rule-grid">
+          <label className="check-row">
+            <input type="checkbox" checked={rules.has_aka_dora} onChange={() => onToggleRule("has_aka_dora")} />
+            <span>Red fives enabled</span>
+          </label>
+          <label className="check-row">
+            <input type="checkbox" checked={rules.has_open_tanyao} onChange={() => onToggleRule("has_open_tanyao")} />
+            <span>Open tanyao allowed</span>
+          </label>
+          <label className="check-row">
+            <input type="checkbox" checked={rules.has_double_yakuman} onChange={() => onToggleRule("has_double_yakuman")} />
+            <span>Double yakuman enabled</span>
+          </label>
+        </div>
       </div>
     </section>
   );
@@ -769,7 +789,7 @@ function ResultPanel({ result }) {
     return (
       <aside className="result-panel empty-result">
         <PanelTitle icon={<Trophy size={20} />} title="Result" subtitle="Score appears after a valid winning hand" />
-        <div className="empty-state">Waiting for hand</div>
+        <div className="empty-state">Build a complete hand to see payments, yaku, and fu.</div>
       </aside>
     );
   }
