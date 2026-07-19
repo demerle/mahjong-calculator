@@ -1,4 +1,5 @@
 import json
+import os
 from http.server import BaseHTTPRequestHandler
 from http.server import HTTPServer
 
@@ -8,8 +9,8 @@ from mahjong_score.hand_scoring import get_hand_rules
 from mahjong_score.hand_scoring import score_hand_from_data
 
 
-HOST = "127.0.0.1"
-PORT = 8005
+HOST = os.environ.get("HOST", "127.0.0.1")
+PORT = int(os.environ.get("PORT", "8005"))
 
 
 class MahjongScoreHandler(BaseHTTPRequestHandler):

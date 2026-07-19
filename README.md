@@ -35,6 +35,33 @@ The frontend starts at:
 http://127.0.0.1:5173
 ```
 
+## Run with Docker Compose
+
+Build and start both services:
+
+```bash
+docker compose up --build
+```
+
+The frontend is served at:
+
+```text
+http://127.0.0.1:5173
+```
+
+The backend API is exposed at:
+
+```text
+http://127.0.0.1:8005
+```
+
+For another public API URL, set `VITE_API_BASE_URL` before building the
+frontend image:
+
+```bash
+VITE_API_BASE_URL=https://api.example.com docker compose up --build
+```
+
 ## Main App Flow
 
 The React frontend lets users tap their winning hand tiles, choose the winning
